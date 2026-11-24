@@ -1,0 +1,35 @@
+-- Create these measures in Power BI (Modeling > New measure).
+Total Employees = DISTINCTCOUNT(employees[EmployeeID])
+
+Active Employees =
+CALCULATE([Total Employees], employees[Attrition] = "No")
+
+Employees Left =
+CALCULATE([Total Employees], employees[Attrition] = "Yes")
+
+Attrition Rate =
+DIVIDE([Employees Left], [Total Employees], 0)
+
+Average Age = AVERAGE(employees[Age])
+
+Average Monthly Salary = AVERAGE(employees[MonthlySalary])
+
+Low Satisfaction Employees =
+CALCULATE([Total Employees], employees[JobSatisfaction] IN {1, 2})
+
+Low Satisfaction % =
+DIVIDE([Low Satisfaction Employees], [Total Employees], 0)
+
+Overtime Employees =
+CALCULATE([Total Employees], employees[Overtime] = "Yes")
+
+Overtime Share =
+DIVIDE([Overtime Employees], [Total Employees], 0)
+
+Average Tenure = AVERAGE(employees[YearsAtCompany])
+
+Leavers (Selected Context) =
+CALCULATE([Total Employees], KEEPFILTERS(employees[Attrition] = "Yes"))
+
+-- Format Attrition Rate, Low Satisfaction %, and Overtime Share as Percentage.
+-- Use employee count fields as whole numbers and salary/age/tenure as appropriate.
